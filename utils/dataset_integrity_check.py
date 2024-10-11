@@ -1,7 +1,7 @@
 # TASK I (Modelling)
 
 
-def usability_of_dataset(data):
+def usability_of_dataset(data, config_data):
 
     can_be_used = True
 
@@ -29,29 +29,25 @@ def usability_of_dataset(data):
                     f"Column '{col}', Index {index}: '{value}' contains unwanted added data!"
                 )
 
-            # if col == 'Column1' and value not in ['ExpectedValue1', 'ExpectedValue2']:
-            #     print(f"Coloana '{col}', Index {index}: '{value}' nu se încadrează în clasificarea așteptată.")
+            if col in config_data:
+                expected_values = config_data[col]["unique_values"]
+                if value not in expected_values:
+                    print(
+                        f"Column '{col}', Index {index}: '{value}' shouldn't be part of this dataset."
+                    )
 
-    if can_be_used:
-        print("There were no usability problems found")
-    else:
-        print("Usability problems have been found")
     return can_be_used
 
 
-def count_of_unique_elements_per_class(data, config_data):
+def inconsistent_number_of_unique_values(data, config_data):
     can_be_used = True
-    print("\nCount of unique instances and their value:")
     for col in data.columns:
         if col != "Plus":
-            unique_values = data[col].unique()
+
             count = data[col].nunique()
-            print(f"\nColumn '{col}': has {count} unique instaces")
-            if col not in ["Row.names", "Horodateur"]:
-                print(f"Values: {unique_values.tolist()}")
 
             if col in config_data:
-                expected_count = config_data[col]
+                expected_count = config_data[col]["expected_count"]
                 if count > expected_count:
                     can_be_used = False
                     print(
