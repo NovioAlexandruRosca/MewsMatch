@@ -14,7 +14,7 @@
 |-------------------------------|-----------------------------------------------------------------|
 | [config/](./config/)          | Configuration files                                             |
 | [data/](./data/)              | Raw and processed data                                          |
-| [logs/](./logs/)              | Scraper run logs                                                |
+| [logs/](./logs/)              | Logs                                                            |
 | [notebooks/](./notebooks/)    | Jupyter analysis notebooks                                      |
 | [scripts/](./scripts/)        | Standalone scripts                                              |
 | [utils/](./utils/)            | Scripting utilities                                             |
