@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 from utils.IO_utils import load_from_excel, load_from_json
 import os
-import unidecode
 
 data = load_from_excel("../data/datasets/base_cat_dataset.xlsx")
 config_data = load_from_json("../config/base_dataset_characteristics.json")
@@ -12,20 +11,20 @@ os.makedirs(f"../data/plots/all_breed/", exist_ok=True)
 for col in data.columns:
 
     fig, axs = plt.subplots(1, 2, figsize=(12, 5))
-    data[col].value_counts().reindex(config_data[col]["unique_values"], fill_value=0).plot(
-        kind='bar', ax=axs[0], color='purple', edgecolor='black'
-    )
+    data[col].value_counts().reindex(
+        config_data[col]["unique_values"], fill_value=0
+    ).plot(kind="bar", ax=axs[0], color="purple", edgecolor="black")
     axs[0].set_title(f"Histogram of {col}")
     axs[0].set_xlabel(col)
     axs[0].set_ylabel("Frequency")
-    axs[0].tick_params(axis='x', rotation=0)
+    axs[0].tick_params(axis="x", rotation=0)
 
-    if data[col].dtype in ['int64', 'float64']:
+    if data[col].dtype in ["int64", "float64"]:
         data[[col]].boxplot(ax=axs[1], vert=False)
         axs[1].set_title(f"Boxplot of {col}")
         axs[1].set_xlabel(col)
     else:
-        axs[1].axis('off')
+        axs[1].axis("off")
 
     file_path = f"../data/plots/all_breed/{col}_histogram.png"
     plt.tight_layout()
@@ -44,20 +43,20 @@ for breed in data[breed_column].unique():
             continue
 
         fig, axs = plt.subplots(1, 2, figsize=(12, 5))
-        breed_data[col].value_counts().reindex(config_data[col]["unique_values"], fill_value=0).plot(
-            kind='bar', ax=axs[0], color='purple', edgecolor='black'
-        )
+        breed_data[col].value_counts().reindex(
+            config_data[col]["unique_values"], fill_value=0
+        ).plot(kind="bar", ax=axs[0], color="purple", edgecolor="black")
         axs[0].set_title(f"Histogram of {col} for {breed}")
         axs[0].set_xlabel(col)
         axs[0].set_ylabel("Frequency")
-        axs[0].tick_params(axis='x', rotation=0)
+        axs[0].tick_params(axis="x", rotation=0)
 
-        if breed_data[col].dtype in ['int64', 'float64']:
+        if breed_data[col].dtype in ["int64", "float64"]:
             breed_data[[col]].boxplot(ax=axs[1], vert=False)
             axs[1].set_title(f"Boxplot of {col} for {breed}")
             axs[1].set_xlabel(col)
         else:
-            axs[1].axis('off')
+            axs[1].axis("off")
 
         os.makedirs(f"../data/plots/{breed}/", exist_ok=True)
         file_path = f"../data/plots/{breed}/{col}_histogram.png"
