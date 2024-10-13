@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from MewsMatch.utils import load_from_excel, load_from_json
+from utils.IO_utils import load_from_excel, load_from_json
 import os
 
 data = load_from_excel(
