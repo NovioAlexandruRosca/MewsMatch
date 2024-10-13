@@ -1,9 +1,13 @@
 import matplotlib.pyplot as plt
-from utils.IO_utils import load_from_excel, load_from_json
+from MewsMatch.utils import load_from_excel, load_from_json
 import os
 
-data = load_from_excel("../data/datasets/base_cat_dataset.xlsx")
-config_data = load_from_json("../config/base_dataset_characteristics.json")
+data = load_from_excel(
+    "../data/datasets/numeric_cat_dataset.xlsx"
+)  ####################
+config_data = load_from_json(
+    "../config/numeric_dataset_characteristics.json"
+)  ##################
 data = data.drop(columns=["Row.names", "Horodateur", "Plus"])
 
 os.makedirs(f"../data/plots/all_breed/", exist_ok=True)
