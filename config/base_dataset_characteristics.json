@@ -1,106 +1,197 @@
 {
     "Sexe": {
         "expected_count": 3,
-        "unique_values": ["F", "M", "NSP"]
+        "unique_values": ["F", "M", "NSP"],
+        "mappings": {"M": "male", "F": "female"}
     },
     "Age": {
         "expected_count": 4,
-        "unique_values": ["Moinsde1", "1a2", "2a10", "Plusde10"]
+        "unique_values": ["Moinsde1", "1a2", "2a10", "Plusde10"],
+        "mappings": {
+            "Moinsde1": "Less than 1 year",
+            "1a2": "1-2 years",
+            "2a10": "2-10 years",
+            "Plusde10": "More than 10 years"
+        }
     },
     "Race": {
         "expected_count": 15,
-        "unique_values": ["SBI", "EUR", "NR", "MCO", "BEN", "NSP", "PER", "ORI", "BRI", "Autre", "CHA", "RAG", "TUV", "SPH", "SAV"]
+        "unique_values": ["SBI", "EUR", "NR", "MCO", "BEN", "NSP", "PER", "ORI", "BRI", "Autre", "CHA", "RAG", "TUV", "SPH", "SAV"],
+        "mappings": {
+            "SBI": "Birman",
+            "EUR": "European",
+            "NR": "Unknown",
+            "MCO": "Maine coon",
+            "BEN": "Bengal",
+            "NSP": "Unknown",
+            "PER": "Persian",
+            "ORI": "Siamese",
+            "BRI": "British Shorthair",
+            "Autre": "Other",
+            "CHA": "Chartreux",
+            "RAG": "Ragdoll",
+            "TUV": "Turkish angora",
+            "SPH": "Sphynx",
+            "SAV": "Savannah"
+        }
     },
     "Nombre": {
         "expected_count": 6,
-        "unique_values": ["1", "2", "3", "4","5", "Plusde5"]
+        "unique_values": ["1", "2", "3", "4", "5", "Plusde5"],
+        "mappings": {
+                "1": "1",
+                "2": "2",
+                "3": "3",
+                "4": "4",
+                "5": "5",
+                "Plusde5": "More than 5"
+        }
     },
     "Logement": {
         "expected_count": 4,
-        "unique_values": ["ASB", "AAB", "ML", "MI"]
+        "unique_values": ["ASB", "AAB", "ML", "MI"],
+        "mappings": {
+            "ASB": "Apartment without balcony",
+            "AAB": "Apartment with balcony or terrace",
+            "ML": "House in a subdivision",
+            "MI": "Individual house"
+        }
     },
     "Zone": {
         "expected_count": 3,
-        "unique_values": ["U", "R", "PU"]
+        "unique_values": ["U", "R", "PU"],
+        "mappings": {
+            "U": "Urban",
+            "PU": "Periurban",
+            "R": "Rural"
+        }
     },
     "Ext": {
         "expected_count": 5,
-        "unique_values": [0, 1, 2, 3, 4]
+        "unique_values": [0, 1, 2, 3, 4],
+        "mappings": {
+            "0": "None",
+            "1": "Limited (less than one hour)",
+            "2": "Moderate (1 to 5 hours)",
+            "3": "Long (more than 5 hours)",
+            "4": "All the time (come back just to eat)"
+        }
     },
     "Obs": {
         "expected_count": 4,
-        "unique_values": [0, 1, 2, 3]
+        "unique_values": [0, 1, 2, 3],
+        "mappings": {
+            "0": "None",
+            "1": "Limited (less than one hour)",
+            "2": "Moderate (1 to 5 hours)",
+            "3": "Long (more than 5 hours)"
+        }
     },
     "Timide": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Calme": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Effraye": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Intelligent": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Vigilant": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Perseverant": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Affectueux": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Amical": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Solitaire": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Brutal": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Dominant": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Agressif": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Impulsif": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Previsible": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Distrait": {
         "expected_count": 5,
-        "unique_values": [1, 2, 3, 4, 5]
+        "unique_values": [1, 2, 3, 4, 5],
+        "mappings": {}
     },
     "Abondance": {
         "expected_count": 4,
-        "unique_values": ["NSP", "3", "2", "1"]
+        "unique_values": ["NSP", "3", "2", "1"],
+        "mappings": {
+            "NSP": "I dont know",
+            "3": "High",
+            "2": "Moderate",
+            "1": "Low"
+        }
     },
     "PredOiseau": {
         "expected_count": 5,
-        "unique_values": [0, 1, 2, 3, 4]
+        "unique_values": [0, 1, 2, 3, 4],
+        "mappings": {
+            "0": "Never",
+            "1": "Rarely (1 to 5 times a year)",
+            "2": "Sometimes (5 to 10 times a year)",
+            "3": "Often (1 to 3 times a month)",
+            "4": "Very often (once a week or more)"
+        }
     },
     "PredMamm": {
         "expected_count": 5,
-        "unique_values": [0, 1, 2, 3, 4]
+        "unique_values": [0, 1, 2, 3, 4],
+        "mappings": {
+            "0": "Never",
+            "1": "Rarely (1 to 5 times a year)",
+            "2": "Sometimes (5 to 10 times a year)",
+            "3": "Often (1 to 3 times a month)",
+            "4": "Very often (once a week or more)"
+        }
     }
 }

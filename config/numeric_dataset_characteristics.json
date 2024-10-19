@@ -1,0 +1,106 @@
+{
+    "Sexe": {
+        "expected_count": 3,
+        "unique_values": [0, 1, -1]
+    },
+    "Age": {
+        "expected_count": 4,
+        "unique_values": [0, 1, 2, 10]
+    },
+    "Race": {
+        "expected_count": 15,
+        "unique_values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, -1]
+    },
+    "Nombre": {
+        "expected_count": 6,
+        "unique_values": [1, 2, 3, 4, 5, 6]
+    },
+    "Logement": {
+        "expected_count": 4,
+        "unique_values": [1, 2, 3, 4]
+    },
+    "Zone": {
+        "expected_count": 3,
+        "unique_values": [1, 2, 3]
+    },
+    "Ext": {
+        "expected_count": 5,
+        "unique_values": [0, 1, 2, 3, 4]
+    },
+    "Obs": {
+        "expected_count": 4,
+        "unique_values": [0, 1, 2, 3]
+    },
+    "Timide": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Calme": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Effraye": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Intelligent": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Vigilant": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Perseverant": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Affectueux": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Amical": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Solitaire": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Brutal": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Dominant": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Agressif": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Impulsif": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Previsible": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Distrait": {
+        "expected_count": 5,
+        "unique_values": [1, 2, 3, 4, 5]
+    },
+    "Abondance": {
+        "expected_count": 4,
+        "unique_values": [1, 2, 3, -1]
+    },
+    "PredOiseau": {
+        "expected_count": 5,
+        "unique_values": [0, 1, 2, 3, 4]
+    },
+    "PredMamm": {
+        "expected_count": 5,
+        "unique_values": [0, 1, 2, 3, 4]
+    }
+}

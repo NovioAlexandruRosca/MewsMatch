@@ -1,4 +1,5 @@
 from utils.IO_utils import load_from_excel
+import pandas as pd
 
 
 def count_instances_for_race(data):
@@ -34,6 +35,25 @@ def attribute_statistics(data):
                     )
 
 
-data = load_from_excel("../data/datasets/base_cat_dataset.xlsx")
+def race_correlations(data):
+    data_correlation = data.drop(columns=['Plus', 'Horodateur', 'Nombre', 'Row.names'])
+    print("\nCorrelation between each race and its attributes:")
+    for race in data_correlation['Race'].unique():
+        race_data = data_correlation[data_correlation['Race'] == race]
+        if not race_data.empty:
+            correlation = race_data.corr()['Race']
+            print(f"\nCorrelations for each race {race}:")
+            print(correlation.sort_values(ascending=False))
+
+def average_by_race(data):
+    data_correlation = data.drop(columns=['Plus', 'Horodateur', 'Nombre', 'Row.names'])
+    mean_values = data_correlation.groupby('Race').mean()
+    print("\nAverage for each race:")
+    print(mean_values.to_string(index=True, header=True))
+
+data = load_from_excel("../data/datasets/numeric_cat_dataset.xlsx")
+# data = load_from_excel("../data/datasets/base_cat_dataset.xlsx")
 count_instances_for_race(data)
 attribute_statistics(data)
+race_correlations(data)
+average_by_race(data)
