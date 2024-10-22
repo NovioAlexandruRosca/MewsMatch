@@ -8,18 +8,18 @@ def usability_of_dataset(data, config_data):
     missing_values = data.isnull().sum()
     duplicates = data.duplicated()
 
-    if missing_values.any():
+    if missing_values.any():                            # Missing Values
         for column, count in missing_values.items():
             if count > 0 and column != "Plus":  # ONLY the Plus column can have no value
                 can_be_used = False
                 print(f"Column '{column}': Has {count} missing values")
 
-    if duplicates.any():
+    if duplicates.any():                                 # Duplicated instances
         can_be_used = False
         print("\nDuplicated rows found:")
         print(data[duplicates])
 
-    for col in data.columns:
+    for col in data.columns:                              # Unwanted data
         for index, value in data[col].items():
             if (
                 isinstance(value, str) and len(value.split()) > 1 and col != "Plus"
