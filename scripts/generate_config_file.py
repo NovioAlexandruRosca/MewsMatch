@@ -25,4 +25,5 @@ def generate_mappings_from_dataset(df):
 
 
 mappings = generate_mappings_from_dataset(df)
-print(json.dumps(mappings, indent=4))
+with open("../config/dddd.json", 'w') as f:
+    json.dump(mappings, f, indent=4)
