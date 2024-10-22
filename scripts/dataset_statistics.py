@@ -41,9 +41,9 @@ def race_correlations(data):
     for race in data_correlation['Race'].unique():
         race_data = data_correlation[data_correlation['Race'] == race]
         if not race_data.empty:
-            correlation = race_data.corr()['Race']
+            correlation = race_data.corr()
             print(f"\nCorrelations for each race {race}:")
-            print(correlation.sort_values(ascending=False))
+            print(correlation)
 
 def average_by_race(data):
     data_correlation = data.drop(columns=['Plus', 'Horodateur', 'Nombre', 'Row.names'])
