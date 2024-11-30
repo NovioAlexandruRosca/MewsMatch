@@ -18,12 +18,12 @@ def generate_mappings_from_dataset(df):
         result[column] = {
             "expected_count": expected_count,
             "unique_values": unique_values,
-            "mappings": {}
+            "mappings": {},
         }
 
     return result
 
 
 mappings = generate_mappings_from_dataset(df)
-with open("../config/dddd.json", 'w') as f:
+with open("../config/dddd.json", "w") as f:
     json.dump(mappings, f, indent=4)

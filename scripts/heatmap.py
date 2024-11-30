@@ -9,8 +9,8 @@ data = load_from_excel("../data/datasets/numeric_cat_dataset.xlsx")
 data = data.drop(["Row.names", "Horodateur", "Plus"], axis=1)
 
 for column in data.columns:
-    if data[column].dtype != 'int64' and data[column].dtype != 'float64':
-        data[column] = data[column].astype('category')
+    if data[column].dtype != "int64" and data[column].dtype != "float64":
+        data[column] = data[column].astype("category")
 
 
 def cramers_v(confusion_matrix):
@@ -43,5 +43,13 @@ cramers_v_matrix = calculate_cramers_v_matrix(data)
 
 plt.figure(figsize=(16, 12))
 plt.title("Relations between attributes(Heatmap)")
-sns.heatmap(cramers_v_matrix, cmap="coolwarm", annot=True, fmt=".2f", linewidths=0.5, cbar=True, square=True)
+sns.heatmap(
+    cramers_v_matrix,
+    cmap="coolwarm",
+    annot=True,
+    fmt=".2f",
+    linewidths=0.5,
+    cbar=True,
+    square=True,
+)
 plt.show()
