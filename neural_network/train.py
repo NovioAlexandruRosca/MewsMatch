@@ -9,11 +9,12 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 data = pd.read_excel("../data/datasets/balanced_outputs/balanced_hybrid.xlsx")
 
 
-def one_hot_encode(labels, num_classes=10):
-    one_hot = np.zeros((labels.size, num_classes))
-    one_hot[np.arange(labels.size), labels] = 1
-    return one_hot
-
+def one_hot_encode(y):
+    unique_classes = np.unique(y)
+    one_hot_encoded = np.zeros((len(y), len(unique_classes)))
+    for i, value in enumerate(y):
+        one_hot_encoded[i, unique_classes == value] = 1
+    return one_hot_encoded
 
 columns_to_keep = [
     "Sexe",
@@ -47,17 +48,21 @@ data = data[columns_to_keep + ["Race"]]
 X = data[columns_to_keep].values
 y = data["Race"].values.reshape(-1, 1)
 
-scaler = StandardScaler()
-scaler.fit(X)
+def compute_scaler(X):
+    mean = np.mean(X, axis=0)
+    std = np.std(X, axis=0)
+    return mean, std
 
-print("Medie:", scaler.mean_)
-print("STD:", scaler.scale_)
+def scale_data(X, mean, std):
+    return (X - mean) / std
 
-X = scaler.transform(X)
+mean, std = compute_scaler(X)
+print("Medie:", mean)
+print("STD:", std)
 
-encoder = OneHotEncoder()
-y = encoder.fit_transform(y).toarray()
+X = scale_data(X, mean, std)
 
+y = one_hot_encode(y)
 
 def data_split(X, y, test_size=0.2, random_state=None):
 
