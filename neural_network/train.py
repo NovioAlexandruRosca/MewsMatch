@@ -64,32 +64,23 @@ def data_split(X, y, test_size=0.2, random_state=None):
     if random_state is not None:
         np.random.seed(random_state)
 
-    # Convert test_size to train_size
     train_size = 1 - test_size
-
-    # Get unique classes and their indices
     unique_classes, class_counts = np.unique(y.argmax(axis=1), return_counts=True)
     train_indices = []
     test_indices = []
 
-    # Split each class proportionally
     for cls in unique_classes:
-        # Get indices for current class
         cls_indices = np.where(y.argmax(axis=1) == cls)[0]
         np.random.shuffle(cls_indices)
 
-        # Calculate split point
         split_idx = int(train_size * len(cls_indices))
 
-        # Add indices to train and test sets
         train_indices.extend(cls_indices[:split_idx])
         test_indices.extend(cls_indices[split_idx:])
 
-    # Shuffle the indices
     np.random.shuffle(train_indices)
     np.random.shuffle(test_indices)
 
-    # Return split datasets
     return X[train_indices], X[test_indices], y[train_indices], y[test_indices]
 
 
@@ -150,6 +141,11 @@ def weight_and_bias_initialization(activation_type):
         biases.append(np.zeros((1, output_size)))
 
 
+def apply_dropout(layer, dropout_rate):
+    mask = (np.random.rand(*layer.shape) > dropout_rate).astype(float)
+    return layer * mask / (1 - dropout_rate)
+
+
 def relu(x):
     return np.maximum(0, x)
 
@@ -171,11 +167,15 @@ def softmax(x):
     return exp_x / np.sum(exp_x, axis=1, keepdims=True)
 
 
-def forward_propagation(x, activation_type):
+def forward_propagation(x, activation_type, dropout_rate=0.2, apply_dropout_flag=False):
     activations = [x]
     for i in range(len(weights) - 1):
         z = np.dot(activations[-1], weights[i]) + biases[i]
         a = sigmoid(z) if activation_type else relu(z)
+
+        if apply_dropout_flag:
+            a = apply_dropout(a, dropout_rate)
+
         activations.append(a)
 
     z_output = np.dot(activations[-1], weights[-1]) + biases[-1]
@@ -270,7 +270,7 @@ def predictions_visualizer(
     print(f"\nAccuracy on these {num_samples} samples: {accuracy:.4f}")
 
 
-def train(x_train, y_train, x_val, y_val, epochs_wh_improvement=10, decay_factor=0.5, epochs=100, batch_size=64, activation_type=1):
+def train(x_train, y_train, x_val, y_val, epochs_wh_improvement=10, decay_factor=0.5, epochs=100, batch_size=64, activation_type=1, apply_dropout_flag=False):
     global learning_rate
     weight_and_bias_initialization(activation_type)
 
@@ -296,7 +296,7 @@ def train(x_train, y_train, x_val, y_val, epochs_wh_improvement=10, decay_factor
             x_batch = x_train[i: i + batch_size]
             y_batch = y_train[i: i + batch_size]
 
-            activations = forward_propagation(x_batch, activation_type)
+            activations = forward_propagation(x_batch, activation_type, dropout_rate=0.2, apply_dropout_flag=apply_dropout_flag)
             backpropagation(activations, y_batch, activation_type)
 
             batch_loss = cross_entropy_loss(activations[-1], y_batch)
@@ -310,7 +310,7 @@ def train(x_train, y_train, x_val, y_val, epochs_wh_improvement=10, decay_factor
         train_loss = np.mean(batch_losses)
         train_accuracy = np.mean(np.array(train_predictions) == np.array(train_labels))
 
-        val_activations = forward_propagation(x_val, activation_type)
+        val_activations = forward_propagation(x_val, activation_type, dropout_rate=0.2, apply_dropout_flag=False)
         val_loss = cross_entropy_loss(val_activations[-1], y_val)
         val_predictions = np.argmax(val_activations[-1], axis=1)
         val_labels = np.argmax(y_val, axis=1)
@@ -362,4 +362,4 @@ def train(x_train, y_train, x_val, y_val, epochs_wh_improvement=10, decay_factor
         apply_dropout_flag=False,)
 
 
-train(X_train, y_train, X_val, y_val, epochs_wh_improvement=15, decay_factor=0.2, epochs=1000, batch_size=10, activation_type=1)
+train(X_train, y_train, X_val, y_val, epochs_wh_improvement=15, decay_factor=0.2, epochs=1000, batch_size=10, activation_type=1, apply_dropout_flag=False)
