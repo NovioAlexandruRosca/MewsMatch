@@ -5,8 +5,13 @@ import re
 import langid
 from collections import Counter
 import nltk
+import yake
+from transformers import pipeline
+from transformers import AutoTokenizer, AutoModelForCausalLM
 nltk.download('punkt')
-nlp = spacy.load("en_core_web_sm")
+#nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("ro_core_news_sm")
+
 
 with open("../data/nlp_text", "r", encoding="utf-8") as file:
     content = file.read()
@@ -63,6 +68,31 @@ punctuation_counts = {punctuation: punctuation_marks.count(punctuation) for punc
 
 
 word_count = word_count.most_common()
+
+
+def extract_keywords(text, num_keywords=10, language="ro", duplication_threshold=0.9):
+    kw_extractor = yake.KeywordExtractor(lan=language, n=1, top=num_keywords,dedupLim=duplication_threshold)
+    keywords = kw_extractor.extract_keywords(text)
+    return [kw[0] for kw in keywords]
+
+keywords = extract_keywords(content)
+
+
+def genereate_sentences(keywords, model_name="readerbench/RoGPT2-medium", max_length=30, num_return_sequences=1):
+    sentence = []
+    generator = pipeline("text-generation", model=model_name, pad_token_id=50256)
+
+    for keyword in keywords:
+        prompt = f"{keyword}"
+        results = generator(prompt, num_return_sequences=num_return_sequences, truncation=True)
+        sentence.append(results[0]['generated_text'])
+
+    return sentence
+
+
+
+keyword_sentences = genereate_sentences(keywords)
+
 ########################################
 
 data = {
@@ -90,7 +120,11 @@ data = {
             "variance_sentence_length": variance_sentence_length,
             "pos_distribution": pos_counts,
             "punctuation_usage": punctuation_counts
-        }
+        },
+    "keywords": {
+        "extracted_keywords": keywords,
+        "gen_prop": keyword_sentences
+    }
 }
 
 
