@@ -5,7 +5,7 @@
     "statistics": {
         "num_chars": 1685,
         "num_words": 292,
-        "num_sentences": 15
+        "num_sentences": 12
     },
     "word_frequencies": {
         "în": 14,
@@ -416,30 +416,25 @@
         "long_words_count": 75
     },
     "syntactic_features": {
-        "num_sentences": 15,
-        "avg_sentence_length": 20.866666666666667,
-        "variance_sentence_length": 107.8488888888889,
+        "num_sentences": 12,
+        "avg_sentence_length": 26.083333333333332,
+        "variance_sentence_length": 149.24305555555557,
         "pos_distribution": {
-            "": 1,
-            "AUX": 25,
-            "ADJ": 24,
-            "NOUN": 78,
-            "SCONJ": 3,
-            "DET": 15,
-            "PART": 8,
-            "ADP": 55,
-            "PROPN": 4,
-            "ADV": 16,
-            "CCONJ": 9,
-            "PRON": 25,
-            "SPACE": 31,
-            "VERB": 17,
+            "PROPN": 183,
+            "ADJ": 10,
             "PUNCT": 41,
-            "NUM": 2
+            "AUX": 4,
+            "VERB": 12,
+            "ADP": 4,
+            "NOUN": 43,
+            "X": 20,
+            "SPACE": 31,
+            "NUM": 5,
+            "DET": 1
         },
         "punctuation_usage": {
-            ",": 25,
             ":": 1,
+            ",": 25,
             ".": 12,
             ";": 3
         }
@@ -457,17 +452,17 @@
             "veteran",
             "scaunul"
         ],
-        "gen_prop": [
-            "Euston's Daughter' (titlu original: în ) este un film noir și thriller englez din anul 2019, regizat de Cli",
-            "Ashbury' s-a născut in St. John's Park, Oxfordshire, Anglia, în 1893 fiind fiul lui Charles Ashbury,",
-            "văd' pe domnul de Robespierre în prim-plan. În momentul acela, ea a aflat pe cale că a făcut un târg cu",
-            "aşa' de oameni] şi s-o botezaţi în numele lui Dumnezeu. Aceasta era treaba voastră, cum vă veţi îmbrăca şi ce veţi mânca.",
-            "alături' de un număr de filme de groază în două serii. După absolvirea școlii secundare și a liceului, s-a alăturat trupei de teatru a",
-            "oftează' (o referire la forma de plural din limba franceză çuvres).",
-            "neputincios'].În februarie 2003, Consiliul Frontului Popular a inițiat procedurile de punere în aplicare a Acordului de asociere a Moldovei la Uniunea Europeană.",
-            "8:04'10\").",
-            "veteran'; pentru al treilea an consecutiv, Premiul Nobel pentru literatură a fost acordat lui Robert Silverberg pentru „afirmația unui erou din istoria",
-            "scaunul' sau „apa care fierbe”, iar o limbă separată o formează cuvintele din grupul de cuvinte înrudite."
+        "generated_sentences": [
+            "Trenul de la Iași la Euston, cu plecare mâine dimineață, este complet rezervat.\n",
+            "Trenul de la Ashbury a întârziat din nou, provocând agitație printre călători.\n",
+            "Văd lumea prin ochii unui copil, plină de minuni și aventuri.\n",
+            "Rareori se întâmplă **aşa** de bine să prinzi un tren fără întârzieri.\n",
+            "Prietenul meu stătea alături, oferindu-mi sprijin moral.\n",
+            "Bătrânul oftează adânc, privind spre apusul soarelui; amintirile îl copleșesc.\n",
+            "Copilul, neputincios în fața mării furioase, a privit cu teamă valurile uriașe care se spărgeau pe țărm.\n",
+            "Trenul de la 8:04 a întârziat din nou, provocând o mare frustrare printre călători.\n",
+            "Veteranul războiului, cu ochii obosiți, își amintea de camarazii căzuți.\n",
+            "Bătrânul s-a așezat comod pe scaunul din fața vetrei.\n"
         ]
     }
 }
