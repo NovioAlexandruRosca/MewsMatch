@@ -9,6 +9,9 @@ from collections import Counter
 import nltk
 import yake
 import google.generativeai as genai
+from googletrans import Translator
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+
 
 nltk.download('punkt')
 nlp = spacy.load("en_core_web_sm")
@@ -75,25 +78,56 @@ def extract_keywords(text, num_keywords=10, language="ro", duplication_threshold
     keywords = kw_extractor.extract_keywords(text)
     return [kw[0] for kw in keywords]
 
-keywords = extract_keywords(content)
+keywords = extract_keywords(content, language=language)
 
 #generate sentences with the extracted keywords from the text
-def genereate_sentences(keywords, content, language="ro"):
+def genereate_sentences(keywords, content, language="ro", type_of_generation=1):
     sentence = []
-    genai.configure(api_key="AIzaSyB4lrryXp_acVm7ANCfunAdDfXFupLEHwY")
-    generation_config = {
-        "temperature" : 0.7,
-        "max_output_tokens" : 50
-    }
-    model = genai.GenerativeModel("gemini-1.5-flash")
 
-    for keyword in keywords:
-        keyword_sentence = find_sentence_with_keyword(keyword, content)
-        # prompt = f"Generează o propoziție folosind cuvantul: {keyword}, în care cuvântul dat să aibă același sens ca în propoziția: {keyword_sentence}"
-        prompt = (f"Create a new sentence in the {language} language using the word: {keyword},"
-                  f" where the given word has a similar meaning with its appearance in the following sentence: {keyword_sentence}")
-        response = model.generate_content(prompt)
-        sentence.append(response.text)
+    if type_of_generation == 1:
+        genai.configure(api_key="AIzaSyB4lrryXp_acVm7ANCfunAdDfXFupLEHwY")
+        generation_config = {
+            "temperature" : 0.7,
+            "max_output_tokens" : 50
+        }
+        model = genai.GenerativeModel("gemini-1.5-flash")
+
+        for keyword in keywords:
+            keyword_sentence = find_sentence_with_keyword(keyword, content)
+            # prompt = f"Generează o propoziție folosind cuvantul: {keyword}, în care cuvântul dat să aibă același sens ca în propoziția: {keyword_sentence}"
+            prompt = (f"Create a new sentence in the {language} language using the word: {keyword},"
+                      f" where the given word has a similar meaning with its appearance in the following sentence: {keyword_sentence}")
+            response = model.generate_content(prompt)
+            sentence.append(response.text)
+    else:
+        model_name = "gpt2"
+        tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+        model = GPT2LMHeadModel.from_pretrained(model_name)
+
+        translator = Translator()
+
+        for keyword in keywords:
+            if language == "ro":
+                keyword = translator.translate(keyword, src="ro", dest="en").text
+
+            input_ids = tokenizer.encode(keyword, return_tensors="pt")
+
+            output = model.generate(
+                input_ids,
+                max_length=50,  # Maximum length of the generated text
+                num_return_sequences=1,  # Number of outputs
+                temperature=0.7,  # Controls randomness (lower = less random)
+                top_k=50,  # Limits sampling to top-k tokens
+                top_p=0.95,  # Nucleus sampling
+                do_sample=True  # Enable sampling
+            )
+
+            generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+
+            if language == "ro":
+                generated_text = translator.translate(generated_text, src="en", dest="ro").text
+
+            sentence.append(generated_text)
 
     return sentence
 
@@ -104,7 +138,7 @@ def find_sentence_with_keyword(keyword, content):
             return sentence.strip()
     return None
 
-keyword_sentences = genereate_sentences(keywords, content)
+keyword_sentences = genereate_sentences(keywords, content, language=language, type_of_generation=2)
 
 ########################################
 
