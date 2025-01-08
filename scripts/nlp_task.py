@@ -17,7 +17,7 @@ nltk.download('punkt')
 nlp = spacy.load("en_core_web_sm")
 #nlp = spacy.load("ro_core_news_sm")
 
-with open("../data/nlp_text", "r", encoding="utf-8") as file:
+with open("../data/english_nlp_text", "r", encoding="utf-8") as file:
     content = file.read()
     # print(content)
 
@@ -72,15 +72,17 @@ punctuation_counts = {punctuation: punctuation_marks.count(punctuation) for punc
 
 word_count = word_count.most_common()
 
+
 #extract keywords from text
 def extract_keywords(text, num_keywords=10, language="ro", duplication_threshold=0.9):
     kw_extractor = yake.KeywordExtractor(lan=language, n=1, top=num_keywords,dedupLim=duplication_threshold)
     keywords = kw_extractor.extract_keywords(text)
     return [kw[0] for kw in keywords]
 
+
 keywords = extract_keywords(content, language=language)
 
-#generate sentences with the extracted keywords from the text
+
 def genereate_sentences(keywords, content, language="ro", type_of_generation=1):
     sentence = []
 
@@ -114,12 +116,12 @@ def genereate_sentences(keywords, content, language="ro", type_of_generation=1):
 
             output = model.generate(
                 input_ids,
-                max_length=50,  # Maximum length of the generated text
-                num_return_sequences=1,  # Number of outputs
-                temperature=0.7,  # Controls randomness (lower = less random)
-                top_k=50,  # Limits sampling to top-k tokens
-                top_p=0.95,  # Nucleus sampling
-                do_sample=True  # Enable sampling
+                max_length=10,
+                num_return_sequences=1,
+                temperature=0.7,
+                top_k=50,
+                top_p=0.95,
+                do_sample=True
             )
 
             generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
@@ -131,12 +133,14 @@ def genereate_sentences(keywords, content, language="ro", type_of_generation=1):
 
     return sentence
 
+
 def find_sentence_with_keyword(keyword, content):
     sentences = re.split(r'[.!?]\s*', content)
     for sentence in sentences:
         if re.search(rf'\b{keyword}\b', sentence, re.IGNORECASE):
             return sentence.strip()
     return None
+
 
 keyword_sentences = genereate_sentences(keywords, content, language=language, type_of_generation=2)
 
