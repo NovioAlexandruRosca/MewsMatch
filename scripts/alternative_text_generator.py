@@ -64,15 +64,25 @@ def get_synonym(word, checked_words=None):
     if word.lower() in checked_words:
         return word
 
+    checked_words.add(word.lower())
+
     synonyms = wn.synsets(word)
+
     if synonyms:
-        filtered_synonyms = [
-            lemma.name() for lemma in synonyms[0].lemmas()
-            if lemma.name().lower() != word.lower()
-        ]
-        filtered_synonyms = [syn for syn in filtered_synonyms if syn.lower() != word.lower()]
-        if filtered_synonyms:
-            return random.choice(filtered_synonyms)
+
+        synonym_candidates = []
+        for syn in synonyms:
+            for lemma in syn.lemmas():
+                lemma_name = lemma.name()
+                if lemma_name.lower() != word.lower() and lemma_name.lower() not in checked_words:
+                    synonym_candidates.append((lemma_name, lemma.count()))
+
+        synonym_candidates.sort(key=lambda x: x[1], reverse=True)
+
+        sorted_synonyms = [syn for syn, _ in synonym_candidates]
+
+        if sorted_synonyms:
+            return sorted_synonyms[0]
 
     return word
 
@@ -83,11 +93,26 @@ def get_hypernym(word, checked_words=None):
     if word.lower() in checked_words:
         return word
 
+    checked_words.add(word.lower())
+
     synonyms = wn.synsets(word)
+
     if synonyms:
-        hypernyms = synonyms[0].hypernyms()
-        if hypernyms:
-            return hypernyms[0].lemmas()[0].name()
+        hypernym_candidates = []
+        for syn in synonyms:
+            hypernyms = syn.hypernyms()
+            for hypernym in hypernyms:
+
+                lemma_name = hypernym.lemmas()[0].name()
+                if lemma_name.lower() not in checked_words:
+                    hypernym_candidates.append((lemma_name, hypernym.lemmas()[0].count()))
+
+        hypernym_candidates.sort(key=lambda x: x[1], reverse=True)
+
+        sorted_hypernyms = [hypernym for hypernym, _ in hypernym_candidates]
+
+        if sorted_hypernyms:
+            return sorted_hypernyms[0]
 
     return word
 
@@ -98,24 +123,33 @@ def get_negated_antonym(word, checked_words=None):
     if word.lower() in checked_words:
         return word
 
+    checked_words.add(word.lower())
+
     synonyms = wn.synsets(word)
+
     if synonyms:
-        antonyms = [ant for lemma in synonyms[0].lemmas() for ant in lemma.antonyms()]
-        if antonyms:
-            return f"not {antonyms[0].name()}"
+        antonym_candidates = []
+        for syn in synonyms:
+            for lemma in syn.lemmas():
+                for ant in lemma.antonyms():
+                    antonym_candidates.append((ant.name(), ant.count()))
+
+        antonym_candidates.sort(key=lambda x: x[1], reverse=True)
+
+        sorted_antonyms = [ant for ant, _ in antonym_candidates]
+
+        if sorted_antonyms:
+            return f"not {sorted_antonyms[0].replace('_', ' ')}"
 
     return word
 
 
-def generate_alternative_text(text, language, replacement_percentage=0.2):
+def generate_alternative_text(text, language, replacement_percentage=0.4):
     words = nltk.word_tokenize(text)
     total_words = len(words)
     num_replacements = int(total_words * replacement_percentage)
 
-    words_to_replace = random.sample([word for word in words if
-                                      word not in string.punctuation and not re.match(english_pronouns,
-                                                                                      word) and not re.match(
-                                          romanian_pronouns, word)], num_replacements)
+    words_to_replace = random.sample([word for word in words if word not in string.punctuation and not re.match(english_pronouns, word) and not re.match(romanian_pronouns, word)], num_replacements)
 
     modified_words = []
     checked_words = set()
