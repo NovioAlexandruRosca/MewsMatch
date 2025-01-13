@@ -1,7 +1,4 @@
-# from langdetect import detect
 import json
-import os
-
 import spacy
 import re
 import langid

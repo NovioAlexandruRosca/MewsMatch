@@ -3,7 +3,7 @@ from nltk.corpus import wordnet as wn
 import pandas as pd
 import nltk
 
-nltk.download('wordnet')
+# nltk.download('wordnet')
 
 valid_species = [
     "Bengal", "Birman", "British Shorthair", "Chartreux",
@@ -68,16 +68,6 @@ df.rename(columns=column_mappings, inplace=True)
 # cat1_species = random.choice(valid_species)
 # cat2_species = random.choice(valid_species)
 
-cat1_species = 'Siamese'
-cat2_species = 'Turkish Angora'
-
-cat1_code = breed_to_code.get(cat1_species, "Unknown breed")
-cat2_code = breed_to_code.get(cat2_species, "Unknown breed")
-
-df_cat1 = df[df['Breed'] == cat1_code]
-df_cat2 = df[df['Breed'] == cat2_code]
-
-
 def get_synonym(word):
     if word in unchanged_words:
         return word
@@ -136,6 +126,15 @@ def connection_words():
 # "Feline females"
 #Tomcats
 #male memb ers
+
+cat1_species = 'Siamese'
+cat2_species = 'Turkish Angora'
+
+cat1_code = breed_to_code.get(cat1_species, "Unknown breed")
+cat2_code = breed_to_code.get(cat2_species, "Unknown breed")
+
+df_cat1 = df[df['Breed'] == cat1_code]
+df_cat2 = df[df['Breed'] == cat2_code]
 
 def count_column_values(df, breed_name):
     column_counts = {"Breed": breed_name}
@@ -2609,9 +2608,9 @@ def generate_category_text(category, introduction_text):
 
     return category_text
 
-category1_intro = "General Characteristics, "
-category2_intro = "Behavioral Traits, "
-category3_intro = "Hunting Habits, "
+category1_intro = "General Characteristics,"
+category2_intro = "\nBehavioral Traits,"
+category3_intro = "\nHunting Habits,"
 
 category1_text = generate_category_text(category1, category1_intro)
 category2_text = generate_category_text(category2, category2_intro)
