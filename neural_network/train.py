@@ -5,6 +5,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.utils import shuffle
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
+import pickle
 
 data = pd.read_excel("../data/datasets/balanced_outputs/balanced_hybrid.xlsx")
 
@@ -274,6 +275,16 @@ def predictions_visualizer(
     accuracy = np.mean(true_labels == predicted_labels)
     print(f"\nAccuracy on these {num_samples} samples: {accuracy:.4f}")
 
+def save_model(weights, biases, filename="neural_network_model.pkl"):
+    model_data = {
+        "weights": weights,
+        "biases": biases,
+        "mean": mean,
+        "std": std,
+    }
+    with open(filename, "wb") as file:
+        pickle.dump(model_data, file)
+    print(f"Model saved to {filename}")
 
 def train(x_train, y_train, x_val, y_val, epochs_wh_improvement=10, decay_factor=0.5, epochs=100, batch_size=64, activation_type=1, apply_dropout_flag=False):
     global learning_rate
@@ -366,5 +377,9 @@ def train(x_train, y_train, x_val, y_val, epochs_wh_improvement=10, decay_factor
         dropout_rate=0.3,
         apply_dropout_flag=False,)
 
+    save_model(weights, biases, filename="neural_network_model.pkl")
+
 
 train(X_train, y_train, X_val, y_val, epochs_wh_improvement=15, decay_factor=0.2, epochs=1000, batch_size=10, activation_type=1, apply_dropout_flag=False)
+
+
