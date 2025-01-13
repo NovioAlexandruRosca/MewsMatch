@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import PhotoImage, Text, Entry
 from pathlib import Path
+import sys
+sys.path.append('../project')
+import identify_cat_breed
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("assets")
@@ -88,6 +91,8 @@ class IdentifyBreedPage(tk.Frame):
 
     def identify_breed(self):
         descriere = self.entry_describe.get("1.0", "end").strip()
-        print("Descriere primită:", descriere)
+        print("Description:", descriere)
+        breed = identify_cat_breed.identify_breed(descriere)
+        print(breed)
         self.entry_breed.delete(0, "end")
-        self.entry_breed.insert(0, "Identified Breed")
+        self.entry_breed.insert(0, breed)

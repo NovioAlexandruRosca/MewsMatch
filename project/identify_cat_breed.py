@@ -154,17 +154,34 @@ def predict(features, model_filename, columns_to_keep):
 
 
 
-text = """ The cat is not bold and spends less than 1 hour outside every day. It lives in an apartment
- in an urban area and rarely cries. not friendly never smart much catches birds is never focused"""
-
 def identify_breed(text):
     features = extract_features(text, attribute_map)
     model_filename = "../neural_network/neural_network_model.pkl"
     predicted_class, probabilities, predicted_probability = predict(features, model_filename, columns_to_keep)
-    return predicted_class, predicted_probability
+    breed_code = {
+        "Bengal": 5,
+        "Birman": 1,
+        "British Shorthair": 9,
+        "Chartreux": 10,
+        "European": 2,
+        "Maine Coon": 4,
+        "Persian": 7,
+        "Ragdoll": 11,
+        "Savannah": 6,
+        "Sphynx": 13,
+        "Siamese": 8,
+        "Turkish Angora": 12,
+        "No breed": 3,
+        "Other": 14,
+        "Unknown": -1
+    }
+    code_breed = {v: k for k, v in breed_code.items()}
+    breed_name = code_breed.get(predicted_class, "Unknown class")
+    return breed_name
 
-predicted_class, predicted_prob = identify_breed(text)
-print(predicted_class)
-print(predicted_prob)
+text = """ The cat is not bold and spends less than 1 hour outside every day. It lives in an apartment
+ in an urban area and rarely cries."""
+
+
 
 
