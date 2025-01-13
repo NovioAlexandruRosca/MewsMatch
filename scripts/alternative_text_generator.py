@@ -58,13 +58,7 @@ def get_word_definition(word):
     return synonyms_list[:1]
 
 
-def get_synonym(word, checked_words=None):
-    if checked_words is None:
-        checked_words = set()
-    if word.lower() in checked_words:
-        return word
-
-    checked_words.add(word.lower())
+def get_synonym(word,):
 
     synonyms = wn.synsets(word)
 
@@ -74,8 +68,7 @@ def get_synonym(word, checked_words=None):
         for syn in synonyms:
             for lemma in syn.lemmas():
                 lemma_name = lemma.name()
-                if lemma_name.lower() != word.lower() and lemma_name.lower() not in checked_words:
-                    synonym_candidates.append((lemma_name, lemma.count()))
+                synonym_candidates.append((lemma_name, lemma.count()))
 
         synonym_candidates.sort(key=lambda x: x[1], reverse=True)
 
@@ -87,13 +80,7 @@ def get_synonym(word, checked_words=None):
     return word
 
 
-def get_hypernym(word, checked_words=None):
-    if checked_words is None:
-        checked_words = set()
-    if word.lower() in checked_words:
-        return word
-
-    checked_words.add(word.lower())
+def get_hypernym(word):
 
     synonyms = wn.synsets(word)
 
@@ -104,8 +91,7 @@ def get_hypernym(word, checked_words=None):
             for hypernym in hypernyms:
 
                 lemma_name = hypernym.lemmas()[0].name()
-                if lemma_name.lower() not in checked_words:
-                    hypernym_candidates.append((lemma_name, hypernym.lemmas()[0].count()))
+                hypernym_candidates.append((lemma_name, hypernym.lemmas()[0].count()))
 
         hypernym_candidates.sort(key=lambda x: x[1], reverse=True)
 
@@ -117,13 +103,7 @@ def get_hypernym(word, checked_words=None):
     return word
 
 
-def get_negated_antonym(word, checked_words=None):
-    if checked_words is None:
-        checked_words = set()
-    if word.lower() in checked_words:
-        return word
-
-    checked_words.add(word.lower())
+def get_negated_antonym(word):
 
     synonyms = wn.synsets(word)
 
@@ -165,11 +145,10 @@ def generate_alternative_text(text, language, replacement_percentage=0.4):
 
                     while modified_word.lower() == original_word.lower() and attempt < 5:
                         replacement_type = random.choice([get_synonym, get_hypernym, get_negated_antonym])
-                        modified_word = replacement_type(word, checked_words)
+                        modified_word = replacement_type(word)
                         attempt += 1
 
                     if modified_word.lower() != original_word.lower():
-                        checked_words.add(modified_word.lower())
                         modified_words.append(modified_word)
                         print(f"Base word: {word} Modified word: {modified_word}")
                     else:
@@ -177,10 +156,9 @@ def generate_alternative_text(text, language, replacement_percentage=0.4):
                 else:
                     possible_syn = get_word_definition(word)
                     if possible_syn and num_replacements > 0:
-                        syn = random.choice(possible_syn)
-                        modified_words.append(syn.strip())
+                        modified_words.append(possible_syn[0].strip())
                         num_replacements -= 1
-                        print(f"Base word: {word} | Modified word: {syn} | Words Left: {num_replacements}")
+                        print(f"Base word: {word} | Modified word: {possible_syn[0]} | Words Left: {num_replacements}")
                     else:
                         modified_words.append(word)
 
