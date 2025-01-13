@@ -71,64 +71,77 @@ breed_to_code = {
 df = pd.read_excel('../data/datasets/balanced_outputs/balanced_hybrid.xlsx')
 df.rename(columns=column_mappings, inplace=True)
 
-cat1_species = 'Siamese'
 
-cat1_code = breed_to_code.get(cat1_species, "Unknown breed")
-df_cat1 = df[df['Breed'] == cat1_code]
+def get_breed_description(cat1_species):
 
-def count_column_values(df):
-    column_counts = {}
-    columns_dictionary = {}
+    cat1_code = breed_to_code.get(cat1_species, "Unknown breed")
+    df_cat1 = df[df['Breed'] == cat1_code]
 
-    for column in df.columns:
-        if column != 'Breed':
-            value_counts = df[column].value_counts().to_dict()
+    def count_column_values(df):
+        column_counts = {}
+        columns_dictionary = {}
 
-            total_count = sum(value_counts.values())
-            weighted_sum = sum(value * count for value, count in value_counts.items())
-            avg = weighted_sum / total_count if total_count > 0 else 0
+        for column in df.columns:
+            if column != 'Breed':
+                value_counts = df[column].value_counts().to_dict()
 
-            columns_dictionary[column] = {
-                "average": avg
-            }
+                total_count = sum(value_counts.values())
+                weighted_sum = sum(value * count for value, count in value_counts.items())
+                avg = weighted_sum / total_count if total_count > 0 else 0
 
-    column_counts['Attributes'] = columns_dictionary
-    return column_counts
+                columns_dictionary[column] = {
+                    "average": avg
+                }
+
+        column_counts['Attributes'] = columns_dictionary
+        return column_counts
 
 
-cat1_data = count_column_values(df_cat1)
+    cat1_data = count_column_values(df_cat1)
 
-filtered_attributes = {
-    "Attributes": {
-        key: value
-        for key, value in cat1_data["Attributes"].items()
-        if key in attributes_to_keep
+    filtered_attributes = {
+        "Attributes": {
+            key: value
+            for key, value in cat1_data["Attributes"].items()
+            if key in attributes_to_keep
+        }
     }
-}
 
-print(json.dumps(filtered_attributes, indent=2))
+    print(json.dumps(filtered_attributes, indent=2))
 
-breed_name = cat1_species
-breed_data = filtered_attributes
+    breed_name = cat1_species
+    breed_data = filtered_attributes
 
-prompt = f"""
-You are an expert in cat breeds. I will provide you with the name of a cat breed and a JSON object containing details about that breed. Your task is to generate a natural language description of the breed using the information in the JSON object. The description should be engaging, informative, and suitable for a general audience.
+    prompt = f"""
+    You are an expert in cat breeds. I will provide you with the name of a cat breed and a JSON object containing details about that breed. Your task is to generate a natural language description of the breed using the information in the JSON object. The description should be engaging, informative, and suitable for a general audience.
+    
+    Now, here is the breed and JSON data:
+    
+    Breed: {breed_name}
+    JSON:
+    {json.dumps(breed_data, indent=2)}
+    
+    Generate a description based on this input.
+    """
 
-Now, here is the breed and JSON data:
+    stream = ollama.chat(
+        model="llama3.2",
+        messages=[{"role": "user", "content": prompt}],
+        stream=True,
+    )
 
-Breed: {breed_name}
-JSON:
-{json.dumps(breed_data, indent=2)}
+    text = ""
 
-Generate a description based on this input.
-"""
+    for chunk in stream:
+        text += chunk["message"]["content"]
 
-stream = ollama.chat(
-    model="llama3.2",
-    messages=[{"role": "user", "content": prompt}],
-    stream=True,
-)
+    sentences = text.split(". ")
 
-print("Generated Text:")
-for chunk in stream:
-    print(chunk["message"]["content"], end='', flush=True)
+    sentences = sentences[1:]
+
+    text = ". ".join(sentences)
+
+    if text.endswith("."):
+        text = text[:-1]
+    text = text.strip()
+    return text
