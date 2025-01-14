@@ -3,9 +3,13 @@ import re
 import sys
 import numpy as np
 import pandas as pd
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
 sys.path.append('../data')
 from attribute_map import extended_attribute_map
+import model_keyword_extractor
 
 
 def calculate_attribute_means_from_data(file_path, columns_to_keep):
@@ -62,7 +66,7 @@ def normalize_keywords(attribute_map):
             normalized_map[attribute][normalized_keyword] = value
     return normalized_map
 
-def extract_features(text, attribute_map):
+def extract_features_manual(text, attribute_map):
     text = preprocess_text(text)
     features = {attribute: None for attribute in attribute_map.keys()}
 
@@ -125,6 +129,29 @@ def extract_features(text, attribute_map):
 
     return features
 
+def extract_features_automat(text):
+    features = model_keyword_extractor.run_keyword_extractor(text)
+    return features
+
+def combine_manual_automat_feature_extraction(features_manual, features_automat):
+    combined_features = {}
+    all_attributes = set(features_manual.keys()).union(features_automat.keys())
+
+    for attribute in all_attributes:
+        value_manual = features_manual.get(attribute, -1)
+        value_extractor = features_automat.get(attribute, -1)
+
+        if value_manual == -1 and value_extractor != -1:
+            combined_features[attribute] = value_extractor
+        elif value_extractor == -1 and value_manual != -1:
+            combined_features[attribute] = value_manual
+        elif value_manual != -1 and value_extractor != -1:
+            combined_features[attribute] = (value_manual + value_extractor) / 2
+        else:
+            combined_features[attribute] = -1
+
+    return combined_features
+
 def predict(features, model_filename, columns_to_keep):
 
     with open(model_filename, "rb") as file:
@@ -155,9 +182,11 @@ def predict(features, model_filename, columns_to_keep):
 
 
 def identify_breed(text):
-    features = extract_features(text, attribute_map)
+    features_manual = extract_features_manual(text, attribute_map)
+    features_automat = extract_features_automat(text)
+    combined_features = combine_manual_automat_feature_extraction(features_manual, features_automat)
     model_filename = "../neural_network/neural_network_model.pkl"
-    predicted_class, probabilities, predicted_probability = predict(features, model_filename, columns_to_keep)
+    predicted_class, probabilities, predicted_probability = predict(combined_features, model_filename, columns_to_keep)
     breed_code = {
         "Bengal": 5,
         "Birman": 1,
@@ -179,9 +208,7 @@ def identify_breed(text):
     breed_name = code_breed.get(predicted_class, "Unknown class")
     return breed_name
 
+
 text = """ The cat is not bold and spends less than 1 hour outside every day. It lives in an apartment
  in an urban area and rarely cries."""
-
-
-
 
