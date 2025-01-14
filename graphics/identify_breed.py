@@ -4,6 +4,7 @@ from pathlib import Path
 import sys
 sys.path.append('../project')
 import identify_cat_breed
+import tkinter.font as tkfont
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("assets")
@@ -36,7 +37,8 @@ class IdentifyBreedPage(tk.Frame):
 
         entry_image_breed = PhotoImage(file=relative_to_assets("entry_breed.png"))
         canvas.create_image(385.5, 642.0, image=entry_image_breed)
-        self.entry_breed = Entry(self, bd=0, bg="#F5F5F5", fg="#000716", highlightthickness=0)
+        custom_font = tkfont.Font(family="Century Gothic", size=18)
+        self.entry_breed = Entry(self, bd=0, bg="#F5F5F5", fg="#000716", highlightthickness=0, font=custom_font)
         self.entry_breed.place(x=244.0, y=606.0, width=283.0, height=70.0)
 
         # Buton Discover
