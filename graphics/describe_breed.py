@@ -160,7 +160,7 @@ class DescribeBreedPage(tk.Frame):
 
         mode_options = [
             ("Manual", 1),
-            ("Automatic", 2),
+            ("Llama", 2),
         ]
 
         y_offset = 390
